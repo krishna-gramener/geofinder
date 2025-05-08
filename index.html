@@ -22,30 +22,55 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
     <style>
       #map {
-        height: 400px;
+        height: 600px;
         width: 100%;
         border-radius: 0.25rem;
       }
-      .query-item {
-        cursor: pointer;
-        transition: background-color 0.2s;
+      .thinking-section {
+        height: 600px;
+        overflow-y: auto;
       }
-      .query-item:hover {
-        background-color: rgba(13, 110, 253, 0.1);
+      .option-card {
+        transition: all 0.3s ease;
+      }
+      .option-card.selected {
+        border-color: #198754;
+        background-color: rgba(25, 135, 84, 0.1);
+      }
+      .option-card.selected::before {
+        content: "✓ Selected Answer";
+        position: absolute;
+        top: 0.5rem;
+        right: 1rem;
+        color: #198754;
+        font-weight: bold;
+      }
+      .confidence-bar {
+        height: 4px;
+        background: #e9ecef;
+        margin-top: 8px;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .confidence-bar-fill {
+        height: 100%;
+        background: #198754;
+        transition: width 0.5s ease;
       }
     </style>
   </head>
   <body>
-    <div class="container my-4">
+    <div class="container-fluid my-4">
       <h1 class="mb-4 text-primary"><i class="bi bi-geo-alt-fill"></i> GeoFinder</h1>
 
       <div class="row g-4">
-        <div class="col-md-8">
+        <!-- Left Column - Thinking Side -->
+        <div class="col-md-6">
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title"><i class="bi bi-search"></i> Ask a geographical question</h5>
               <p class="card-text text-muted small">
-                Example: "What is the capital of France?" or "Where is Mount Everest located?"
+                Example: "What is the capital of Maharashtra?" or "Show me Bangalore"
               </p>
               <div class="input-group mb-3">
                 <input
@@ -67,22 +92,42 @@
               </div>
 
               <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
+            </div>
+          </div>
 
+          <div class="thinking-section mt-4">
+            <div id="options-container" class="d-none">
+              <h5 class="mb-3"><i class="bi bi-lightbulb"></i> Here's what I'm thinking:</h5>
+              <div id="reasoning" class="alert alert-info mb-4"></div>
+              
+              <h5 class="mb-3"><i class="bi bi-list-check"></i> Possible Interpretations:</h5>
+              <div id="options" class="row g-3 mb-4"></div>
+              
+              <div id="final-answer" class="card mt-4">
+                <div class="card-header bg-success text-white">
+                  <h5 class="card-title mb-0"><i class="bi bi-check-circle-fill"></i> Selected Answer</h5>
+                </div>
+                <div class="card-body">
+                  <div id="final-answer-content"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Map Display -->
+        <div class="col-md-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title"><i class="bi bi-map"></i> Map View</h5>
+              <div id="map"></div>
               <div id="result" class="mt-3 d-none">
                 <h5><i class="bi bi-pin-map-fill"></i> <span id="location-name"></span></h5>
                 <p>Coordinates: <span id="coordinates" class="font-monospace"></span></p>
               </div>
             </div>
           </div>
-
-          <div class="card mt-4 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title"><i class="bi bi-map"></i> Map</h5>
-              <div id="map"></div>
-            </div>
-          </div>
         </div>
-
       </div>
     </div>
 
