@@ -69,3 +69,5 @@ GeoFinder is an intelligent location search interface that combines LLM capabili
 - The application is specifically designed for Indian geographic data
 - GADM data is used for level 1 administrative divisions (states/UTs)
 - OpenStreetMap serves as a fallback for regions and primary source for cities/POIs
+
+**Note:** This is a demo. It contains no confidential data/IP.
